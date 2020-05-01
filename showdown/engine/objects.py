@@ -25,7 +25,7 @@ boost_multiplier_lookup = {
 class State(object):
     __slots__ = ('self', 'opponent', 'weather', 'remaining_weather_turns', 'field', 'remaining_field_turns', 'remaining_trick_room_turns')
 
-    def __init__(self, user, opponent, weather=None, remaining_weather_turns=-1, field=None, remaining_field_turns=-1, remaining_trick_room_turns=-1):
+    def __init__(self, user, opponent, weather=None, remaining_weather_turns=0, field=None, remaining_field_turns=0, remaining_trick_room_turns=0):
         self.self = user
         self.opponent = opponent
         self.weather = weather
@@ -589,7 +589,7 @@ class StateMutator:
     def end_field(self, _a, _b):
         # the blanked parameters are for reversing purposes
         self.state.field = None
-        self.state.remaining_field_turns = -1
+        self.state.remaining_field_turns = 0
 
     def reverse_end_field(self, old_field, old_remaining_turns):
         # the blanked parameters are for reversing purposes
@@ -597,10 +597,10 @@ class StateMutator:
         self.state.remaining_field_turns = old_remaining_turns
 
     def start_trickroom(self, _):
-        if self.state.remaining_trick_room_turns == -1:
-            self.state.remaining_trick_room_turns = 3
+        if self.state.remaining_trick_room_turns == 0:
+            self.state.remaining_trick_room_turns = 5
         else:
-            self.state.remaining_trick_room_turns = -1
+            self.state.remaining_trick_room_turns = 0
 
     def reverse_start_trickroom(self, old_remaining_turns):
         self.state.remaining_trick_room_turns = old_remaining_turns

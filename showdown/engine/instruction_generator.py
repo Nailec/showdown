@@ -99,11 +99,11 @@ def get_instructions_from_special_logic_move(mutator, attacking_pokemon, defendi
     mutator.apply(instructions.instructions)
     if move_name in weather_instructions and mutator.state.weather != move_name and mutator.state.weather not in constants.IRREVERSIBLE_WEATHER:
         new_instructions.append(
-            (constants.MUTATOR_WEATHER_START, move_name, 4, mutator.state.weather, mutator.state.remaining_weather_turns)
+            (constants.MUTATOR_WEATHER_START, move_name, 5, mutator.state.weather, mutator.state.remaining_weather_turns)
         )
     elif move_name == constants.TRICK_ROOM:
         new_instructions.append(
-            (constants.MUTATOR_START_TRICKROOM, -1)
+            (constants.MUTATOR_START_TRICKROOM, 0)
         )
 
     elif move_name in SWITCH_ITEM_MOVES and can_trick_items(attacking_pokemon, defending_pokemon):
@@ -843,7 +843,19 @@ def get_end_of_turn_instructions(mutator, instruction, bot_move, opponent_move, 
 
     mutator.apply(instruction.instructions)
 
-    # TODO update weather turns
+    # end weather
+    if mutator.state.weather not in constants.IRREVERSIBLE_WEATHER and mutator.state.remaining_weather_turns > 0:
+        mutator.state.remaining_weather_turns -= 1
+    if mutator.state.weather is not None and mutator.state.remaining_weather_turns <= 0:
+        end_weather_instruction = (
+            constants.MUTATOR_WEATHER_START,
+            None,
+            0,
+            mutator.state.weather,
+            1
+        )
+        mutator.apply_one(end_weather_instruction)
+        instruction.add_instruction(end_weather_instruction)
 
     # weather damage - sand and hail
     for attacker in sides:
@@ -889,6 +901,20 @@ def get_end_of_turn_instructions(mutator, instruction, bot_move, opponent_move, 
             )
             mutator.apply_one(wish_decrement_instruction)
             instruction.add_instruction(wish_decrement_instruction)
+
+    # grassy terrain
+    for attacker in sides:
+        side = get_side_from_state(mutator.state, attacker)
+        pkmn = side.active
+
+        if mutator.state.field == constants.GRASSY_TERRAIN and pkmn.is_grounded():
+            grassy_heal_instruction = (
+                constants.MUTATOR_HEAL,
+                attacker,
+                max(0, int(min(pkmn.maxhp * 0.0625, pkmn.hp)))
+            )
+            mutator.apply_one(grassy_heal_instruction)
+            instruction.add_instruction(grassy_heal_instruction)
 
     # item and ability - they can add one instruction each
     for attacker in sides:
@@ -1049,6 +1075,15 @@ def get_end_of_turn_instructions(mutator, instruction, bot_move, opponent_move, 
             )
             mutator.apply_one(partially_trapped_damage_instruction)
             instruction.add_instruction(partially_trapped_damage_instruction)
+
+    if mutator.state.remaining_trick_room_turns > 0:
+        mutator.state.remaining_trick_room_turns -= 1
+
+    # end fields
+    if mutator.state.remaining_field_turns > 0:
+        mutator.state.remaining_weather_turns -= 1
+    if mutator.state.remaining_field_turns <= 0:
+        mutator.state.field = None
 
     # disable not used moves if choice-item is held
     for attacker in sides:

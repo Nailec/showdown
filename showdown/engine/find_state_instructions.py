@@ -99,7 +99,7 @@ def user_moves_first(state, user_move, opponent_move):
 
     if user_priority == opponent_priority:
         user_is_faster = user_effective_speed > opponent_effective_speed
-        if state.remaining_trick_room_turns >= 0:
+        if state.remaining_trick_room_turns > 0:
             return not user_is_faster
         else:
             return user_is_faster

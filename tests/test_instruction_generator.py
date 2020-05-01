@@ -1347,7 +1347,7 @@ class TestGetInstructionsFromSpecialLogicMoves(unittest.TestCase):
         self.previous_instruction = TransposeInstruction(
             1,
             [
-                (constants.MUTATOR_WEATHER_START, constants.SUN, 4, None, -1)
+                (constants.MUTATOR_WEATHER_START, constants.SUN, 5, None, 0)
             ],
             False
         )
@@ -1360,8 +1360,8 @@ class TestGetInstructionsFromSpecialLogicMoves(unittest.TestCase):
             TransposeInstruction(
                 1.0,
                 [
-                    (constants.MUTATOR_WEATHER_START, constants.SUN, 4, None, -1),
-                    (constants.MUTATOR_WEATHER_START, constants.RAIN, 4, constants.SUN, 4),
+                    (constants.MUTATOR_WEATHER_START, constants.SUN, 5, None, 0),
+                    (constants.MUTATOR_WEATHER_START, constants.RAIN, 5, constants.SUN, 5),
                 ],
                 False
             )
@@ -2047,9 +2047,9 @@ class TestGetStateFromSwitch(unittest.TestCase):
                     (
                         constants.MUTATOR_WEATHER_START,
                         constants.SUN,
-                        4,
+                        5,
                         None,
-                        -1
+                        0
                     ),
                 ]
                 ,
@@ -2080,9 +2080,9 @@ class TestGetStateFromSwitch(unittest.TestCase):
                     (
                         constants.MUTATOR_WEATHER_START,
                         constants.RAIN,
-                        4,
+                        5,
                         None,
-                        -1
+                        0
                     ),
                 ]
                 ,
@@ -2126,7 +2126,7 @@ class TestGetStateFromSwitch(unittest.TestCase):
         attacker = constants.SELF
         switch_pokemon_name = "pidgey"
         self.state.weather = constants.HEAVY_RAIN
-        self.state.remaining_weather_turns = -1
+        self.state.remaining_weather_turns = 1
         self.state.self.reserve[switch_pokemon_name].ability = constants.HARSH_SUNLIGHT
 
         expected_instructions = [
@@ -2142,9 +2142,9 @@ class TestGetStateFromSwitch(unittest.TestCase):
                     (
                         constants.MUTATOR_WEATHER_START,
                         constants.HARSH_SUNLIGHT,
-                        -1,
+                        1,
                         constants.HEAVY_RAIN,
-                        -1
+                        1
                     ),
                 ]
                 ,
@@ -2161,7 +2161,7 @@ class TestGetStateFromSwitch(unittest.TestCase):
         attacker = constants.SELF
         switch_pokemon_name = "pidgey"
         self.state.weather = constants.HARSH_SUNLIGHT
-        self.state.remaining_weather_turns = -1
+        self.state.remaining_weather_turns = 1
         self.state.self.reserve[switch_pokemon_name].ability = constants.HEAVY_RAIN
 
         expected_instructions = [
@@ -2177,9 +2177,9 @@ class TestGetStateFromSwitch(unittest.TestCase):
                     (
                         constants.MUTATOR_WEATHER_START,
                         constants.HEAVY_RAIN,
-                        -1,
+                        1,
                         constants.HARSH_SUNLIGHT,
-                        -1
+                        1
                     ),
                 ]
                 ,
@@ -3078,6 +3078,7 @@ class TestGetStateFromStatusDamage(unittest.TestCase):
 
     def test_sand_damages_pokemon(self):
         self.state.weather = constants.SAND
+        self.state.remaining_weather_turns = 2
         self.state.self.active.maxhp = 100
         self.state.self.active.hp = 30
         self.state.opponent.active.maxhp = 100
@@ -3104,6 +3105,7 @@ class TestGetStateFromStatusDamage(unittest.TestCase):
 
     def test_ice_damages_pokemon(self):
         self.state.weather = constants.HAIL
+        self.state.remaining_weather_turns = 2
         self.state.self.active.maxhp = 100
         self.state.self.active.hp = 30
         self.state.opponent.active.maxhp = 100
@@ -3130,6 +3132,7 @@ class TestGetStateFromStatusDamage(unittest.TestCase):
 
     def test_sand_does_not_damage_steel_type(self):
         self.state.weather = constants.SAND
+        self.state.remaining_weather_turns = 2
         self.state.self.active.types = ['steel']
         self.state.self.active.maxhp = 100
         self.state.self.active.hp = 30
@@ -3152,6 +3155,7 @@ class TestGetStateFromStatusDamage(unittest.TestCase):
 
     def test_hail_does_not_damage_ice_type(self):
         self.state.weather = constants.HAIL
+        self.state.remaining_weather_turns = 2
         self.state.self.active.types = ['ice']
         self.state.self.active.maxhp = 100
         self.state.self.active.hp = 30
@@ -3174,6 +3178,7 @@ class TestGetStateFromStatusDamage(unittest.TestCase):
 
     def test_double_leftovers_and_poison_and_weather_and_leechseed_executes_in_correct_order(self):
         self.state.weather = constants.HAIL
+        self.state.remaining_weather_turns = 2
         self.state.self.active.maxhp = 100
         self.state.self.active.hp = 30
         self.state.self.active.status = constants.POISON
@@ -3264,6 +3269,7 @@ class TestGetStateFromStatusDamage(unittest.TestCase):
 
     def test_instructions_stop_when_weather_kills(self):
         self.state.weather = constants.HAIL
+        self.state.remaining_weather_turns = 2
         self.state.self.active.maxhp = 100
         self.state.self.active.hp = 10
         self.state.self.active.status = constants.POISON

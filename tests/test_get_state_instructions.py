@@ -773,6 +773,7 @@ class TestGetStateInstructions(unittest.TestCase):
         self.state.self.active.status = constants.SLEEP
         self.state.self.active.ability = 'hydration'
         self.state.weather = constants.RAIN
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -792,6 +793,7 @@ class TestGetStateInstructions(unittest.TestCase):
         self.state.self.active.status = constants.POISON
         self.state.self.active.ability = 'hydration'
         self.state.weather = constants.RAIN
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -3532,6 +3534,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "auroraveil"
         opponent_move = "splash"
         self.state.weather = constants.HAIL
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -3695,6 +3698,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "solarbeam"
         opponent_move = "splash"
         self.state.weather = constants.SUN
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -3712,6 +3716,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "growth"
         opponent_move = "splash"
         self.state.weather = constants.SUN
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -3790,6 +3795,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "surf"
         opponent_move = "splash"
         self.state.weather = constants.HARSH_SUNLIGHT
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -4001,7 +4007,7 @@ class TestGetStateInstructions(unittest.TestCase):
             TransposeInstruction(
                 1,
                 [
-                    (constants.MUTATOR_FIELD_END, constants.ELECTRIC_TERRAIN, -1)
+                    (constants.MUTATOR_FIELD_END, constants.ELECTRIC_TERRAIN, 0)
                 ],
                 False
             )
@@ -4020,7 +4026,7 @@ class TestGetStateInstructions(unittest.TestCase):
             TransposeInstruction(
                 1,
                 [
-                    (constants.MUTATOR_FIELD_END, constants.ELECTRIC_TERRAIN, -1),
+                    (constants.MUTATOR_FIELD_END, constants.ELECTRIC_TERRAIN, 0),
                     (constants.MUTATOR_SIDE_END, constants.SELF, constants.SPIKES, 2)
                 ],
                 False
@@ -4232,6 +4238,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "surf"
         opponent_move = "tackle"
         self.state.weather = constants.RAIN
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -4250,6 +4257,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "hurricane"
         opponent_move = "splash"
         self.state.weather = constants.RAIN
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -4267,6 +4275,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "eruption"
         opponent_move = "tackle"
         self.state.weather = constants.SUN
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -4285,6 +4294,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "surf"
         opponent_move = "splash"
         self.state.weather = constants.SAND
+        self.state.remaining_weather_turns = 2
         self.state.opponent.active.types = ['rock']
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
@@ -4304,6 +4314,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "surf"
         opponent_move = "splash"
         self.state.weather = constants.SAND
+        self.state.remaining_weather_turns = 2
         self.state.opponent.active.types = ['ground']
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
@@ -4453,7 +4464,7 @@ class TestGetStateInstructions(unittest.TestCase):
                 1,
                 [
                     (constants.MUTATOR_SWITCH, 'self', self.state.self.active.id, 'ninetales'),
-                    (constants.MUTATOR_WEATHER_START, constants.SUN, 4, None, -1)
+                    (constants.MUTATOR_WEATHER_START, constants.SUN, 5, None, 0)
                 ],
                 False
             )
@@ -4472,7 +4483,7 @@ class TestGetStateInstructions(unittest.TestCase):
                 1,
                 [
                     (constants.MUTATOR_SWITCH, 'self', self.state.self.active.id, 'politoed'),
-                    (constants.MUTATOR_WEATHER_START, constants.RAIN, 4, None, -1)
+                    (constants.MUTATOR_WEATHER_START, constants.RAIN, 5, None, 0)
                 ],
                 False
             )
@@ -4491,7 +4502,7 @@ class TestGetStateInstructions(unittest.TestCase):
                 1,
                 [
                     (constants.MUTATOR_SWITCH, 'self', self.state.self.active.id, 'tapukoko'),
-                    (constants.MUTATOR_FIELD_START, constants.ELECTRIC_TERRAIN, 4, None, -1)
+                    (constants.MUTATOR_FIELD_START, constants.ELECTRIC_TERRAIN, 5, None, 0)
                 ],
                 False
             )
@@ -4510,7 +4521,7 @@ class TestGetStateInstructions(unittest.TestCase):
                 1,
                 [
                     (constants.MUTATOR_SWITCH, 'self', self.state.self.active.id, 'tapulele'),
-                    (constants.MUTATOR_FIELD_START, constants.PSYCHIC_TERRAIN, 4, None, -1)
+                    (constants.MUTATOR_FIELD_START, constants.PSYCHIC_TERRAIN, 5, None, 0)
                 ],
                 False
             )
@@ -4833,6 +4844,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "return102"
         opponent_move = "splash"
         self.state.weather = constants.SAND
+        self.state.remaining_weather_turns = 2
         self.state.opponent.active.types = ['normal']
         self.state.opponent.active.hp = 40
         self.state.opponent.active.item = 'leftovers'
@@ -4855,6 +4867,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "splash"
         opponent_move = "splash"
         self.state.weather = constants.SAND
+        self.state.remaining_weather_turns = 2
         self.state.opponent.active.types = ['normal']
         self.state.self.active.types = ['normal']
         self.state.self.active.item = 'leftovers'
@@ -5412,6 +5425,7 @@ class TestGetStateInstructions(unittest.TestCase):
         self.state.opponent.active.types = ['normal']
         self.state.self.active.ability = 'sandforce'
         self.state.weather = constants.SAND
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -5433,6 +5447,7 @@ class TestGetStateInstructions(unittest.TestCase):
         self.state.opponent.active.types = ['normal']
         self.state.self.active.ability = 'sandforce'
         self.state.weather = constants.SAND
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -7013,7 +7028,7 @@ class TestGetStateInstructions(unittest.TestCase):
                 1,
                 [
                     (constants.MUTATOR_SWITCH, 'self', self.state.self.active.id, 'tapulele'),
-                    (constants.MUTATOR_FIELD_START, constants.GRASSY_TERRAIN, 4, None, -1)
+                    (constants.MUTATOR_FIELD_START, constants.GRASSY_TERRAIN, 5, None, 0)
                 ],
                 False
             )
@@ -7032,7 +7047,7 @@ class TestGetStateInstructions(unittest.TestCase):
                 1,
                 [
                     (constants.MUTATOR_SWITCH, 'self', self.state.self.active.id, 'tapulele'),
-                    (constants.MUTATOR_FIELD_START, constants.MISTY_TERRAIN, 4, None, -1)
+                    (constants.MUTATOR_FIELD_START, constants.MISTY_TERRAIN, 5, None, 0)
                 ],
                 False
             )
@@ -7044,6 +7059,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "switch politoed"
         opponent_move = "splash"
         self.state.weather = constants.HARSH_SUNLIGHT
+        self.state.remaining_weather_turns = 2
         self.state.self.reserve['politoed'] = Pokemon.from_state_pokemon_dict(StatePokemon("politoed", 81).to_dict())
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
@@ -7062,6 +7078,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "switch politoed"
         opponent_move = "splash"
         self.state.weather = constants.HARSH_SUNLIGHT
+        self.state.remaining_weather_turns = 2
         self.state.self.reserve['politoed'] = Pokemon.from_state_pokemon_dict(StatePokemon("politoed", 81).to_dict())
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
@@ -7397,7 +7414,7 @@ class TestGetStateInstructions(unittest.TestCase):
             TransposeInstruction(
                 1,
                 [
-                    (constants.MUTATOR_WEATHER_START, constants.SUN, 4, self.state.weather, self.state.remaining_weather_turns)
+                    (constants.MUTATOR_WEATHER_START, constants.SUN, 5, self.state.weather, self.state.remaining_weather_turns)
                 ],
                 False
             )
@@ -7633,12 +7650,13 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "sunnyday"
         opponent_move = "splash"
         self.state.weather = constants.RAIN
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
                 1,
                 [
-                    (constants.MUTATOR_WEATHER_START, constants.SUN, 4, self.state.weather, self.state.remaining_weather_turns)
+                    (constants.MUTATOR_WEATHER_START, constants.SUN, 5, self.state.weather, self.state.remaining_weather_turns)
                 ],
                 False
             )
@@ -7654,7 +7672,7 @@ class TestGetStateInstructions(unittest.TestCase):
             TransposeInstruction(
                 1,
                 [
-                    (constants.MUTATOR_WEATHER_START, constants.RAIN, 4, self.state.weather, self.state.remaining_weather_turns)
+                    (constants.MUTATOR_WEATHER_START, constants.RAIN, 5, self.state.weather, self.state.remaining_weather_turns)
                 ],
                 False
             )
@@ -7671,7 +7689,7 @@ class TestGetStateInstructions(unittest.TestCase):
                 1,
                 [
                     (constants.MUTATOR_DAMAGE, constants.SELF, 17),
-                    (constants.MUTATOR_WEATHER_START, constants.RAIN, 4, self.state.weather, self.state.remaining_weather_turns)
+                    (constants.MUTATOR_WEATHER_START, constants.RAIN, 5, self.state.weather, self.state.remaining_weather_turns)
                 ],
                 False
             )
@@ -7700,6 +7718,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "raindance"
         opponent_move = "splash"
         self.state.weather = constants.RAIN
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -7721,7 +7740,7 @@ class TestGetStateInstructions(unittest.TestCase):
             TransposeInstruction(
                 0.75,
                 [
-                    (constants.MUTATOR_WEATHER_START, constants.RAIN, 4, None, -1)
+                    (constants.MUTATOR_WEATHER_START, constants.RAIN, 5, None, 0)
                 ],
                 False
             ),
@@ -7742,7 +7761,7 @@ class TestGetStateInstructions(unittest.TestCase):
             TransposeInstruction(
                 1,
                 [
-                    (constants.MUTATOR_START_TRICKROOM, -1)
+                    (constants.MUTATOR_START_TRICKROOM, 0)
                 ],
                 False
             )
@@ -7770,7 +7789,7 @@ class TestGetStateInstructions(unittest.TestCase):
                 0.7,
                 [
                     (constants.MUTATOR_DAMAGE, constants.SELF, 34),
-                    (constants.MUTATOR_WEATHER_START, constants.RAIN, 4, self.state.weather, self.state.remaining_weather_turns)
+                    (constants.MUTATOR_WEATHER_START, constants.RAIN, 5, self.state.weather, self.state.remaining_weather_turns)
                 ],
                 False
             )
@@ -7789,7 +7808,7 @@ class TestGetStateInstructions(unittest.TestCase):
                 1,
                 [
 
-                    (constants.MUTATOR_WEATHER_START, constants.RAIN, 4, self.state.weather, self.state.remaining_weather_turns),
+                    (constants.MUTATOR_WEATHER_START, constants.RAIN, 5, self.state.weather, self.state.remaining_weather_turns),
                     (constants.MUTATOR_DAMAGE, constants.SELF, 34),
                 ],
                 False
@@ -7808,8 +7827,8 @@ class TestGetStateInstructions(unittest.TestCase):
             TransposeInstruction(
                 1,
                 [
-                    (constants.MUTATOR_WEATHER_START, constants.SAND, 4, None, -1),
-                    (constants.MUTATOR_WEATHER_START, constants.RAIN, 4, constants.SAND, 4)
+                    (constants.MUTATOR_WEATHER_START, constants.SAND, 5, None, 0),
+                    (constants.MUTATOR_WEATHER_START, constants.RAIN, 5, constants.SAND, 5)
                 ],
                 False
             )
@@ -7825,7 +7844,7 @@ class TestGetStateInstructions(unittest.TestCase):
             TransposeInstruction(
                 1,
                 [
-                    (constants.MUTATOR_WEATHER_START, constants.SAND, 4, self.state.weather, self.state.remaining_weather_turns),
+                    (constants.MUTATOR_WEATHER_START, constants.SAND, 5, self.state.weather, self.state.remaining_weather_turns),
                     (constants.MUTATOR_DAMAGE, constants.SELF, 13),
                     (constants.MUTATOR_DAMAGE, constants.OPPONENT, 18),
                 ],
@@ -7839,6 +7858,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "splash"
         opponent_move = "splash"
         self.state.weather = constants.SAND
+        self.state.remaining_weather_turns = 2
         self.state.self.active.hp = 1
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
@@ -7858,6 +7878,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "splash"
         opponent_move = "splash"
         self.state.weather = constants.HAIL
+        self.state.remaining_weather_turns = 2
         self.state.self.active.hp = 1
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
@@ -7881,7 +7902,7 @@ class TestGetStateInstructions(unittest.TestCase):
             TransposeInstruction(
                 1,
                 [
-                    (constants.MUTATOR_WEATHER_START, constants.HAIL, 4, self.state.weather, self.state.remaining_weather_turns),
+                    (constants.MUTATOR_WEATHER_START, constants.HAIL, 5, self.state.weather, self.state.remaining_weather_turns),
                     (constants.MUTATOR_DAMAGE, constants.SELF, 13),
                     (constants.MUTATOR_DAMAGE, constants.OPPONENT, 18),
                 ],
@@ -7895,6 +7916,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "sunnyday"
         opponent_move = "splash"
         self.state.weather = constants.HEAVY_RAIN
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -7916,7 +7938,7 @@ class TestGetStateInstructions(unittest.TestCase):
             TransposeInstruction(
                 1,
                 [
-                    (constants.MUTATOR_WEATHER_START, constants.SUN, 4, self.state.weather, self.state.remaining_weather_turns),
+                    (constants.MUTATOR_WEATHER_START, constants.SUN, 5, self.state.weather, self.state.remaining_weather_turns),
                     (constants.MUTATOR_DAMAGE, constants.SELF, 99)
                 ],
                 False
@@ -8209,6 +8231,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "protect"
         opponent_move = "splash"
         self.state.weather = constants.SAND
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -8768,6 +8791,7 @@ class TestGetStateInstructions(unittest.TestCase):
         bot_move = "icebeam"
         opponent_move = "splash"
         self.state.weather = constants.HARSH_SUNLIGHT
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -9410,6 +9434,7 @@ class TestGetStateInstructions(unittest.TestCase):
         self.state.self.active.hp = 1
         self.state.self.active.maxhp = 100
         self.state.weather = constants.SUN
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -9429,6 +9454,7 @@ class TestGetStateInstructions(unittest.TestCase):
         self.state.self.active.hp = 1
         self.state.self.active.maxhp = 100
         self.state.weather = constants.SAND
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(
@@ -9450,6 +9476,7 @@ class TestGetStateInstructions(unittest.TestCase):
         self.state.self.active.hp = 1
         self.state.self.active.maxhp = 100
         self.state.weather = constants.SAND
+        self.state.remaining_weather_turns = 2
         instructions = get_all_state_instructions(self.mutator, bot_move, opponent_move)
         expected_instructions = [
             TransposeInstruction(

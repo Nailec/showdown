@@ -630,7 +630,7 @@ class PersistentCondition:
     def __init__(self):
         self.name = ""
         self.setter = None
-        self.elapsed_turns = -1
+        self.elapsed_turns = 0
 
     def to_dict(self):
         return {
@@ -640,8 +640,6 @@ class PersistentCondition:
         }
 
     def get_remaining_turns(self):
-        if self.name == constants.TRICK_ROOM:
-            return 4-self.elapsed_turns-1
         if self.setter == None:
             return 5-self.elapsed_turns-1
 
@@ -655,4 +653,4 @@ class PersistentCondition:
         ):
             total_turns+=3
 
-        return total_turns-self.elapsed_turns-1
+        return total_turns-self.elapsed_turns
